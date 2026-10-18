@@ -1,6 +1,7 @@
 SRC_PATH=../rtl
 
-all: synth sim
+simulate: clean synth sim
+all: clean synth sim wave
 
 # Design and testbench synthesis
 synth:
