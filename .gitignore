@@ -1,0 +1,5 @@
+fpga_project/
+work/
+.vscode/
+
+.DS_Store
