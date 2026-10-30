@@ -6,9 +6,8 @@ all: clean synth sim wave
 # Design and testbench synthesis
 synth:
 	mkdir -p work
-	iverilog -g2012 -o work/tb_implication $(SRC_PATH)/implication.sv tb_implication.sv
+	iverilog -g2012 -o work/tb_implication $(SRC_PATH)/XPSComposition.sv tb_implication.sv
 
-# Launch simulation
 sim:
 	./work/tb_implication
 
