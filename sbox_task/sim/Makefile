@@ -6,10 +6,10 @@ all: clean synth sim wave
 # Design and testbench synthesis
 synth:
 	mkdir -p work
-	iverilog -g2012 -o work/tb_implication $(SRC_PATH)/XPSComposition.sv tb_implication.sv
+	iverilog -g2012 -o work/test_bench $(SRC_PATH)/XPSComposition.sv test_bench.sv
 
 sim:
-	./work/tb_implication
+	./work/test_bench
 
 # Open waveform
 wave:
