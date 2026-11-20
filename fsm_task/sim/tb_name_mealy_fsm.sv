@@ -1,12 +1,18 @@
 `timescale 1ns / 1ns
 
 module tb_name_mealy_fsm;
+  parameter TRANSITIONS = 29;
+
   logic       clk_ = 1'b0;
   logic       rst_ = 1'b0;
   logic [7:0] data_;
   logic       detected_;
   logic [2:0] stateDbg_;
-  logic [7:0] name_       [0:4];
+  logic [12:0] testVectors_ [0:TRANSITIONS - 1];
+  logic [2:0] expectedState_;
+  logic expectedDetected_;
+  logic [255:0] testFile_;
+  integer transitionCount_;
 
   name_mealy_fsm dut (
       .clk_(clk_),
@@ -19,68 +25,44 @@ module tb_name_mealy_fsm;
   always #5 clk_ = ~clk_;
 
   initial begin
-    name_[0] = "A";
-    name_[1] = "N";
-    name_[2] = "T";
-    name_[3] = "O";
-    name_[4] = "N";
-
     $dumpfile("work/wave.ocd");
     $dumpvars(0, tb_name_mealy_fsm);
 
-    for (int state = 0; state < 5; state++) begin
-      goToState(state);
-
-      checkTransition(name_[state], state == 4, state == 4 ? 3'd0 : state + 1);
-
-      if (state != 0) begin
-        goToState(state);
-        checkTransition("A", 1'b0, 3'd1);
-      end
-
-      goToState(state);
-      checkTransition("X", 1'b0, 3'd0);
+    if (!$value$plusargs("TEST=%s", testFile_)) begin
+      testFile_ = "sequence_full_path.tv";
     end
+    transitionCount_ = TRANSITIONS;
+    if (testFile_ == "sequence_correct.tv") transitionCount_ = 6;
+    if (testFile_ == "sequence_incorrect.tv") transitionCount_ = 13;
+    runTests(testFile_);
 
-    $display("All FSM transition tests passed.");
+    $display("FSM test passed: %s", testFile_);
     $finish;
   end
 
-  task resetDut;
+  task runTests;
+    input [255:0] fileName;
     begin
-      rst_ = 1'b1;
-      @(posedge clk_);
-      #1;
-      assert (stateDbg_ == 3'd0)
-      else $error("Reset did not enter S0");
-      rst_ = 1'b0;
-      #1;
-    end
-  endtask
+      $readmemb(fileName, testVectors_, 0, transitionCount_ - 1);
+      for (int i = 0; i < transitionCount_; i++) begin
+        {rst_, data_, expectedState_, expectedDetected_} = testVectors_[i];
+        @(negedge clk_);
+        #1;
 
-  task checkTransition;
-    input [7:0] charIn;
-    input expectedDetected;
-    input [2:0] expectedState;
-    begin
-      @(negedge clk_);
-      data_ = charIn;
-      #1;
-      assert (detected_ == expectedDetected)
-      else $error("Wrong output on %c", charIn);
-      @(posedge clk_);
-      #1;
-      assert (stateDbg_ == expectedState)
-      else $error("Wrong state after %c", charIn);
-    end
-  endtask
+        if (!rst_) begin
+          assert (detected_ == expectedDetected_)
+            else $error("Wrong output on vector %0d: data = %h", i, data_);
+        end
 
-  task goToState;
-    input integer targetState;
-    begin
-      resetDut();
-      for (int i = 0; i < targetState; i++) begin
-        checkTransition(name_[i], 1'b0, i + 1);
+        @(posedge clk_);
+        #1;
+        assert (stateDbg_ == expectedState_)
+          else $error(
+              "Wrong state on vector %0d: got %0d, expected %0d",
+              i,
+              stateDbg_,
+              expectedState_
+          );
       end
     end
   endtask
