@@ -1,12 +1,9 @@
 # Аппаратная реализация крипто-алгоритмов
 
-Линтинг из каталога `sbox_task`:
+Запуск целей для конкретного модуля:
 ```console
-cd sbox_task
-make lint
+make -C sbox_task lint
+make -C sbox_task lint-all
+make -C sbox_task format
 ```
 
-`lint` проверяет RTL. `lint-all` дополнительно включает тестбенч
-```console
-make lint-all
-```
