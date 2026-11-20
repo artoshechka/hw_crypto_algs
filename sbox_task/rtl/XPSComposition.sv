@@ -33,12 +33,10 @@ module XPSComposition (
     endcase
   end
 
-  logic [3:0] pBlock;  ///< Блок перестановки
+  logic [3:0] pBlock;  ///< Результат математической перестановки P
 
-  assign pBlock[3]   = sBlock[2];
-  assign pBlock[2]   = sBlock[0];
-  assign pBlock[1]   = sBlock[3];
-  assign pBlock[0]   = sBlock[1];
+  ///< P(x) = {x[2:0], x[3]} — циклический сдвиг влево на один бит.
+  assign pBlock = {sBlock[2:0], sBlock[3]};
 
   ///< Результат композиции
   assign cipherText_ = pBlock ^ key_;
