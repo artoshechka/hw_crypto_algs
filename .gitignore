@@ -1,5 +1,7 @@
 fpga_project/
 work/
+impl/
 .vscode/
 
 .DS_Store
+sbox_task.gprj.user

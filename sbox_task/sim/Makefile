@@ -1,5 +1,7 @@
 SRC_PATH=../rtl
 
+.PHONY: simulate all synth sim wave clean
+
 simulate: clean synth sim
 all: clean synth sim wave
 
@@ -12,7 +14,7 @@ sim:
 	./work/test_bench
 
 # Open waveform
-wave:
+wave: synth sim
 	gtkwave work/wave.ocd \
 		--rcvar 'fontname_signals Monospace 20' \
         --rcvar 'fontname_waves Monospace 20' \
