@@ -10,11 +10,11 @@ synth:
 	mkdir -p work
 	iverilog -g2012 -o work/test_bench $(SRC_PATH)/XPSComposition.sv test_bench.sv
 
-sim:
+sim: synth
 	./work/test_bench
 
 # Open waveform
-wave: synth sim
+wave: sim
 	gtkwave work/wave.ocd \
 		--rcvar 'fontname_signals Monospace 20' \
         --rcvar 'fontname_waves Monospace 20' \
