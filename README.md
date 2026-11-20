@@ -1,9 +1,25 @@
-# Аппаратная реализация крипто-алгоритмов
+# Аппаратная реализация криптоалгоритмов
 
-Запуск целей для конкретного модуля:
+В репозитории находятся две лабораторные работы:
+
+- [sbox_task](sbox_task) — композиция S-box, перестановки и XOR;
+- [fsm_task](fsm_task) — автомат Мили для распознавания имени `ANTON`.
+
+## Общие команды
+
+Команды запускаются из корня репозитория:
+
 ```console
-make -C sbox_task lint
-make -C sbox_task lint-all
-make -C sbox_task format
+make -C <path> lint
+make -C <path> lint-all
+make -C <path> format
 ```
 
+Например:
+
+```console
+make -C fsm_task lint-all
+```
+
+Для симуляции используйте `make -C <path>/sim ...`. Подробные описания
+конкретных лабораторных работ находятся в их README.

@@ -1,0 +1,26 @@
+digraph MealyFSM {
+  rankdir=LR;
+  node [shape=circle];
+
+  S0 [label="S0"];
+  S1 [label="S1\nA"];
+  S2 [label="S2\nAN"];
+  S3 [label="S3\nANT"];
+  S4 [label="S4\nANTO"];
+
+  S0 -> S1 [label="A / 0"];
+  S1 -> S2 [label="N / 0"];
+  S2 -> S3 [label="T / 0"];
+  S3 -> S4 [label="O / 0"];
+  S4 -> S0 [label="N / 1"];
+
+  S0 -> S0 [label="other / 0"];
+  S1 -> S1 [label="A / 0"];
+  S1 -> S0 [label="other / 0"];
+  S2 -> S1 [label="A / 0"];
+  S2 -> S0 [label="other / 0"];
+  S3 -> S1 [label="A / 0"];
+  S3 -> S0 [label="other / 0"];
+  S4 -> S1 [label="A / 0"];
+  S4 -> S0 [label="other / 0"];
+}
