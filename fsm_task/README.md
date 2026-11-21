@@ -18,15 +18,15 @@
 
 - RTL-модуль: [rtl/name_mealy_fsm.sv](rtl/name_mealy_fsm.sv);
 - тестбенч: [sim/tb_name_mealy_fsm.sv](sim/tb_name_mealy_fsm.sv);
-- корректная последовательность: [sim/sequence_correct.tv](sim/sequence_correct.tv);
-- некорректные последовательности: [sim/sequence_incorrect.tv](sim/sequence_incorrect.tv);
-- тестовые векторы: [sim/sequence_full_path.tv](sim/sequence_full_path.tv);
+- тестовые векторы: [sim/sequence.tv](sim/sequence.tv);
 - диаграмма Graphviz: [name_mealy.dot](name_mealy.dot);
 - диаграмма SVG: [name_mealy.svg](name_mealy.svg);
 - проект Gowin EDA: [fsm_task.gprj](fsm_task.gprj).
 
-Тестбенч выполняет обход переходов из каждого состояния и автоматически
-проверяет выход и новое состояние через `assert`.
+Тестбенч выполняет обход переходов из каждого состояния. Каждый вектор
+содержит 8-битный ASCII-символ, ожидаемый выход и ожидаемое состояние
+автомата. Выход проверяется на переднем фронте, а состояние — после
+фронта через `#1`.
 
 ## Запуск
 
@@ -40,9 +40,7 @@ make -C fsm_task format
 Симуляция:
 
 ```console
-make -C fsm_task/sim sim TEST=sequence_correct.tv
-make -C fsm_task/sim sim TEST=sequence_incorrect.tv
-make -C fsm_task/sim sim TEST=sequence_full_path.tv
+make -C fsm_task/sim sim
 make -C fsm_task/sim wave
 ```
 
@@ -55,7 +53,7 @@ make -C fsm_task/sim wave
 
 1. Откройте waveform командой `make -C fsm_task/sim wave`.
 2. Добавьте в GTKWave нужные сигналы, например `data_`, `detected_`,
-   `stateDbg_`, `clk_` и `rst_`.
+   `clk_` и `rst_`.
 3. Выберите `File -> Write Save File` или нажмите `Ctrl+S`.
 4. Сохраните файл как `fsm_task/wave.gtkw`.
 

@@ -10,7 +10,7 @@ module XPSComposition (
     input  logic [3:0] key_,
     output logic [3:0] cipherText_
 );
-  logic [3:0] sBlock;  ///< Блок S-блока
+  logic [3:0] sBlock;
 
   always @(*) begin
     case (data_)
@@ -33,11 +33,9 @@ module XPSComposition (
     endcase
   end
 
-  logic [3:0] pBlock;  ///< Результат математической перестановки P
+  logic [3:0] pBlock;
 
-  ///< P(x) = {x[2:0], x[3]} — циклический сдвиг влево на один бит.
   assign pBlock = {sBlock[2:0], sBlock[3]};
 
-  ///< Результат композиции
   assign cipherText_ = pBlock ^ key_;
 endmodule

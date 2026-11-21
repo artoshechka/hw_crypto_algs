@@ -6,13 +6,11 @@
 /// @param[in] rst_ Синхронный сброс.
 /// @param[in] data_ Входной ASCII-символ.
 /// @param[out] detected_ Признак распознавания имени.
-/// @param[out] stateDbg_ Текущее состояние для отладки.
 module name_mealy_fsm (
     input  logic       clk_,
     input  logic       rst_,
     input  logic [7:0] data_,
-    output logic       detected_,
-    output logic [2:0] stateDbg_
+    output logic       detected_
 );
 
   localparam logic [7:0] CH_A = 8'h41;
@@ -50,7 +48,4 @@ module name_mealy_fsm (
     if (rst_) currentState <= S0;
     else currentState <= nextState;
   end
-
-  assign stateDbg_ = currentState;
-
 endmodule
